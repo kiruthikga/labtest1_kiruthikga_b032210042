@@ -59,13 +59,21 @@ class _BMICalculatorState extends State<BMICalculator> {
 
     if (username.isNotEmpty && weight.isNotEmpty && height.isNotEmpty && gender.isNotEmpty) {
       try {
-          double parsedWeight = double.parse(weight);
-          double parsedHeight = double.parse(height);
+        double parsedWeight = double.parse(weight);
+        double parsedHeight = double.parse(height);
 
+        setState(() {
           calculateBMI();
-          String bmiStatus = bmimessageController.text.trim();
-          BMI bmi = BMI(username, parsedWeight, parsedHeight, gender, bmiStatus);
-          await bmi.save();
+        });
+        String bmiStatus = bmimessageController.text.trim();
+        BMI bmi = BMI(username, parsedWeight, parsedHeight, gender, bmiStatus);
+        await bmi.save();
+        setState(() {
+          fullNameController.clear();
+          heightController.clear();
+          weightController.clear();
+        });
+
       } catch (e) {
         print("Error parsing double: $e");
       }
@@ -73,6 +81,7 @@ class _BMICalculatorState extends State<BMICalculator> {
       print("Invalid input data");
     }
   }
+
 
   void calculateBMI() {
     try {
